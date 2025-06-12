@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const ConnectDB = require('./config/db');
 const UserRouter = require('./routes/user.routes');
 const SnippetRouter = require('./routes/snippet.routes');
+const CommentRouter = require('./routes/comment.routes');
 
 
 const PORT = 5000;
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/user', UserRouter)
 app.use('/api/snippet', SnippetRouter)
+app.use('/api/comment', CommentRouter)
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`);
