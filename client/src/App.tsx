@@ -1,12 +1,16 @@
-import { Button } from "./components/ui/button";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "./components/Header";
+import AppRouter from "./Routes/AppRouter";
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <h1>app</h1>
-      <Button variant="destructive">Click me</Button>
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div className="w-full px-[10%]">
+        <Header />
+        <AppRouter />
+      </div>
+    </ThemeProvider>
   );
-};
+}
 
 export default App;
