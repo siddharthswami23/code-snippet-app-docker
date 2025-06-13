@@ -1,4 +1,4 @@
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+COPY .env .env
+
 EXPOSE 5000
 
-CMD [ "npx","nodemon","server.js" ]
+CMD ["node", "server.js"]

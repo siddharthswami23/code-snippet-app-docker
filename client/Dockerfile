@@ -1,13 +1,13 @@
-FROM node:18-alpine AS builder
+    FROM node:18-alpine 
 
-WORKDIR /app
+    WORKDIR /app
 
-COPY package.json package-lock.json ./
+    COPY package.json package-lock.json ./
 
-RUN npm install
+    RUN npm install
 
-COPY . .
+    COPY . .
 
-EXPOSE 5173
+    EXPOSE 5173
 
-CMD [ "npm","run","dev" ]
+    CMD [ "npm","run","dev" ]
