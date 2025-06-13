@@ -5,6 +5,7 @@ interface User {
   _id: string;
   name: string;
   email: string;
+  snippets: string[];
 }
 
 interface AppContextType {

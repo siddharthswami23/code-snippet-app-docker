@@ -26,16 +26,21 @@ const CreateSnippet = async (req, res) => {
 };
 
 const getAllSnippets = async (req, res) => {
-    const { userId } = req.body;
+  const { userId } = req.body;
 
-    try {
-        const snippets = await Snippet.find({ userId });
-        res.status(200).json(snippets);
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Server Error", error: error.message });
-    }
+  if (!userId) {
+    return res.status(400).json({ message: "userId is required" });
+  }
+
+  try {
+    const snippets = await Snippet.find({ userId });
+    res.status(200).json(snippets);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
 };
+
 
 const getSnippetById = async (req, res) => {
     const { id } = req.params;

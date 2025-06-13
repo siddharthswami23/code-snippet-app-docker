@@ -12,10 +12,14 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AppContext } from "@/context/AppContext";
 
 const Login = () => {
+  const appContext = useContext(AppContext);
+  const userId = appContext?.userId;
   const navigate = useNavigate();
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,9 +32,13 @@ const Login = () => {
       if (isSignUp) {
         const response = await axios.post(
           "http://localhost:5000/api/user/register",
-          { name, email, password }
+          {
+            name,
+            email,
+            password,
+          }
         );
-
+        console.log(response);
         if (response.data.success) {
           toast.success("Account created successfully!");
           localStorage.setItem("user", response.data.user);
@@ -41,8 +49,12 @@ const Login = () => {
       } else {
         const response = await axios.post(
           "http://localhost:5000/api/user/login",
-          { email, password }
+          {
+            email,
+            password,
+          }
         );
+        // console.log(response);
 
         if (response.data.success) {
           toast.success("Login successful!");
@@ -59,9 +71,13 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if (userId !== null) navigate("/");
+  }, [userId]);
+
   return (
     <div className="flex items-center justify-center w-full h-[90vh]">
-      <Card className="w-full max-w-md shadow-lg p-6 scale-120">
+      <Card className="w-full max-w-md shadow-lg p-6 scale-110">
         <CardHeader>
           <CardTitle className="text-2xl whitespace-nowrap">
             {isSignUp ? "Create an account" : "Login to your account"}
