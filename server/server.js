@@ -16,6 +16,8 @@ app.use(express.urlencoded({ extended: true }))
 
 dotenv.config()
 ConnectDB()
+console.log("Mongo URI:", process.env.MONGO_URI);
+
 
 app.get('/', (req, res) => {
     res.send('hello world')

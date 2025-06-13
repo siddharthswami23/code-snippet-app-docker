@@ -31,7 +31,7 @@ const Login = () => {
     try {
       if (isSignUp) {
         const response = await axios.post(
-          "http://localhost:5000/api/user/register",
+          "https://code-snippet-app-docker.onrender.com/api/user/register",
           {
             name,
             email,
@@ -48,7 +48,7 @@ const Login = () => {
         }
       } else {
         const response = await axios.post(
-          "http://localhost:5000/api/user/login",
+          "https://code-snippet-app-docker.onrender.com/api/user/login",
           {
             email,
             password,
