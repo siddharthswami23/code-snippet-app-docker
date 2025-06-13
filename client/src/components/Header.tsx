@@ -26,7 +26,7 @@ const Header = () => {
         ) : (
           <Button
             onClick={() => {
-              localStorage.setItem("user", "");
+              localStorage.removeItem("user");
               navigate("/login");
             }}
           >

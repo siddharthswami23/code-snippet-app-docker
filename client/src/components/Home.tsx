@@ -14,10 +14,24 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 interface Snippet {
   _id: string;
   title: string;
   code: string;
+  comments: string[];
   createdBy: string; // user ID
 }
 
@@ -31,6 +45,7 @@ const Home = () => {
   const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
   const [snippets, setSnippets] = useState<Snippet[]>([]);
+  // console.log(snippets);
 
   useEffect(() => {
     if (userId === null) navigate("/login");
@@ -43,6 +58,7 @@ const Home = () => {
           "http://localhost:5000/api/snippet/getSnippet",
           { userId }
         );
+
         setSnippets(response.data);
       } catch (error) {
         console.log("Error fetching snippets:", error);
@@ -144,6 +160,42 @@ const Home = () => {
                     {snippet.code}
                   </pre>
                 </CardContent>
+                <CardFooter>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full text-base py-5 bg-black text-white"
+                      >
+                        Comments
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Comments</AlertDialogTitle>
+                          {snippet.comments.length > 0 ? (
+                            <div className="text-muted-foreground text-sm">
+                              <ul className="list-disc pl-5">
+                                {snippet.comments.map((comment, index) => (
+                                  <li key={index}>{comment}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ) : (
+                            <p className="text-muted-foreground text-sm">
+                              No comments yet.
+                            </p>
+                          )}
+                        </AlertDialogHeader>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction>Add</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </CardFooter>
               </Card>
             ))}
           </div>

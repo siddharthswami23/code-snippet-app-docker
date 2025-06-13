@@ -41,7 +41,6 @@ const getAllSnippets = async (req, res) => {
   }
 };
 
-
 const getSnippetById = async (req, res) => {
     const { id } = req.params;
 
