@@ -12,38 +12,37 @@ import { Button } from "./ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import axios from "axios";
 
 const Home = () => {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("AppContext must be used within an AppContextProvider");
-  }
+  const appContext = useContext(AppContext);
+  if (!appContext) throw new Error("AppContext is undefined");
 
-  const { user } = context;
+  const { user, userId } = appContext;
+  console.log(userId);
 
   const [title, setTitle] = useState("");
   const [code, setCode] = useState("");
   const [snippets, setSnippets] = useState([]);
 
-  // Fetch user's snippets
   useEffect(() => {
-    const fetchSnippets = async () => {
+    const getSnippets = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:5000/api/snippet/getSnippet/684ad2186127e1b349707311`
+        const response = await axios.post(
+          "http://localhost:5000/api/snippet/getSnippet",
+          { userId }
         );
-        console.log(res);
-        const data = await res.json();
-        setSnippets(data.snippets || []);
+        console.log("Snippets:", response.data);
+        setSnippets(response.data.snippets || []);
       } catch (error) {
-        console.error("Error fetching snippets:", error);
+        console.log("Error fetching snippets:", error);
       }
     };
 
-    if (user?._id) {
-      fetchSnippets();
+    if (userId) {
+      getSnippets();
     }
-  }, [user]);
+  }, [userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,12 +54,12 @@ const Home = () => {
         body: JSON.stringify({
           title,
           code,
-          createdBy: user?._id,
+          createdBy: userId,
         }),
       });
 
       const newSnippet = await res.json();
-      setSnippets((prev) => [...prev, newSnippet]); // Add new snippet to list
+      setSnippets((prev) => [...prev, newSnippet]);
       setTitle("");
       setCode("");
     } catch (err) {

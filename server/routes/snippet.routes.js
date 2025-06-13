@@ -3,7 +3,7 @@ const { CreateSnippet, getAllSnippets, getSnippetById } = require('../controller
 const SnippetRouter = express.Router()
 
 SnippetRouter.post('/create', CreateSnippet)
-SnippetRouter.get('/getSnippet', getAllSnippets)
+SnippetRouter.post('/getSnippet', getAllSnippets)
 SnippetRouter.get('/getSnippet/:id', getSnippetById)
 
 module.exports = SnippetRouter
