@@ -9,11 +9,11 @@ const snippetSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    comments: [
-        {
-            type: String, 
-        },
-    ],
+    comments: {
+        type: [String],
+        default: [],
+    },
+
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

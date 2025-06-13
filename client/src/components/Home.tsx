@@ -20,12 +20,12 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "react-toastify";
 
 interface Snippet {
   _id: string;
@@ -70,28 +70,35 @@ const Home = () => {
     }
   }, [userId]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/api/snippet", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          code,
-          createdBy: userId,
-        }),
-      });
 
-      const newSnippet = await res.json();
-      setSnippets((prev) => [...prev, newSnippet]);
-      setTitle("");
-      setCode("");
-    } catch (err) {
-      console.error("Error creating snippet:", err);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post("http://localhost:5000/api/snippet/create", {
+      title,
+      code,
+      comments: [],
+      userId: userId,
+    });
+
+    const newSnippet = res.data;
+    if (!Array.isArray(newSnippet.comments)) {
+      newSnippet.comments = [];
     }
-  };
+
+    setSnippets((prev) => [...prev, newSnippet]);
+    setTitle(""); // ✅ reset form
+    setCode("");  // ✅ reset form
+
+    toast.success("Snippet created successfully! 🚀");
+  } catch (err) {
+    console.error("Error creating snippet:", err);
+    toast.error("Failed to create snippet.");
+  }
+};
+
 
   return (
     <div className="w-full min-h-screen flex flex-col items-center px-4 sm:px-6 lg:px-20 py-10 gap-10">
@@ -148,8 +155,8 @@ const Home = () => {
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {snippets.map((snippet) => (
-              <Card key={snippet._id} className="p-4">
+            {snippets?.map((snippet, index) => (
+              <Card key={index} className="p-4">
                 <CardHeader>
                   <CardTitle className="text-lg truncate">
                     {snippet.title}
@@ -189,6 +196,7 @@ const Home = () => {
                           )}
                         </AlertDialogHeader>
                       </AlertDialogHeader>
+
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction>Add</AlertDialogAction>
