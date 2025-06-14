@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect, ReactNode, FC } from "react";
+import { createContext, useState, useEffect } from "react";
+import { ReactNode, FC } from "react";
 import axios from "axios";
 
 interface User {
