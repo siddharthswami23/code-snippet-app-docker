@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { ReactNode, FC } from "react";
+import type { ReactNode, FC } from "react";
 import axios from "axios";
 
 interface User {
