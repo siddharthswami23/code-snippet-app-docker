@@ -36,7 +36,7 @@ const AppContextProvider: FC<AppContextProviderProps> = ({ children }) => {
         try {
           // console.log(userId);
           const res = await axios.get(
-            `https://code-snippet-app-docker.onrender.com/api/user/get/${userId}`
+            `http://localhost:5000/api/user/get/${userId}`
           );
           setUser(res.data.user);
         } catch (error) {

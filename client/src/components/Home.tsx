@@ -55,7 +55,7 @@ const Home = () => {
     const getSnippets = async () => {
       try {
         const response = await axios.post(
-          "https://code-snippet-app-docker.onrender.com/api/snippet/getSnippet",
+          "http://localhost:5000/api/snippet/getSnippet",
           { userId }
         );
 
@@ -76,7 +76,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
 
   try {
-    const res = await axios.post("https://code-snippet-app-docker.onrender.com/api/snippet/create", {
+    const res = await axios.post("http://localhost:5000/api/snippet/create", {
       title,
       code,
       comments: [],
