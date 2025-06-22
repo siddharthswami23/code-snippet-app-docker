@@ -1,5 +1,5 @@
 def call(){
-  echo "demo curl command using jenkins"
-  echo "summoning rick for 5 secconds"
-  bat "curl --max-time 5 ascii.live/rick"
+  echo "demo command using jenkins"
+  echo "printing current data and time"
+  bat "date %DATE% %TIME%"
 }
