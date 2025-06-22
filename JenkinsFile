@@ -1,0 +1,68 @@
+@Library('Shared') _
+pipeline {
+    agent any
+
+    environment {
+        COMPOSE_PROJECT_NAME = 'code-snippet-app'
+    }
+
+    stages {
+        stage('Hello') {
+            steps {
+                script {
+                    hello()
+                }
+            }
+        }
+        stage('DemoCall') {
+            steps {
+                script {
+                    demoCall()
+                }
+            }
+        }
+        stage('Clone Repo') {
+            steps {
+                echo '📥 Cloning the public GitHub repo'
+                script {
+                    clone('https://github.com/siddharthswami23/code-snippet-app-docker.git', 'main')
+                }
+                echo '✅ Gi  t repo cloned successfully'
+            }
+        }
+
+        stage('Build Containers') {
+            steps {
+                echo '🐳 Building client and server using Docker Compose'
+                script {
+                    build - container()
+                }
+            }
+        }
+
+        stage('Run Containers') {
+            steps {
+                echo '🚀 Running client and server containers'
+                script {
+                    run - container()
+                }
+            }
+        }
+
+        stage('Verify Containers') {
+            steps {
+                echo '🔍 Checking running containers'
+                bat 'docker ps'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Application deployed successfully at http://localhost:5173'
+        }
+        failure {
+            echo '❌ Deployment failed. Check logs.'
+        }
+    }
+}
